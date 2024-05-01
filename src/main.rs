@@ -8,6 +8,7 @@ mod gtfs;
 
 #[macro_use]
 pub mod macros;
+mod errors;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -15,7 +16,7 @@ async fn main() -> anyhow::Result<()> {
     dotenv().expect(".env file not found");
 
     let client = TransportNswApiClient::new(env::var("TRANSPORT_NSW_API_KEY")?)?;
-    let get_complete = client.timetables().get_complete_gtfs_head().await?;
+    let get_complete = client.timetables().get_complete_gtfs().await?;
     println!("{get_complete:?}");
 
     Ok(())
