@@ -1,8 +1,9 @@
-use std::fmt::{Display, Write};
+use std::fmt::{Display};
 use std::num::ParseIntError;
 use std::str::FromStr;
-use num_traits::{FromPrimitive, PrimInt, ToPrimitive};
-use serde::{Deserialize, Deserializer, Serialize, Serializer};
+
+use num_traits::{FromPrimitive, ToPrimitive};
+
 use crate::make_from_primitive_try_from;
 use crate::try_from_prim;
 

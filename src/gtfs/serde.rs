@@ -1,12 +1,6 @@
-use std::error::Error;
-use std::fmt::{Debug, Display, Formatter};
-use serde::{de, ser, Serialize, Serializer};
-use crate::gtfs::gtfs_types::ColourCode;
-
 pub mod serialisation {
-    use std::error::Error;
-    use std::fmt::{Debug, Display, Formatter};
-    use serde::{ser, Serialize, Serializer};
+    use serde::{ser, Serializer};
+
     use crate::gtfs::gtfs_types::ColourCode;
 
     macro_rules! create_serde_try_into_serialiser {
@@ -30,6 +24,7 @@ pub mod serialisation {
 
 pub mod deserialisation {
     use std::marker::PhantomData;
+
     use crate::gtfs::gtfs_types::ColourCode;
 
     struct GTFSVisitor<T>(PhantomData<T>);
@@ -94,6 +89,7 @@ pub mod deserialisation {
 #[cfg(test)]
 mod serde_tests {
     use serde_test::{assert_ser_tokens, Token};
+
     use crate::gtfs::gtfs_types::ColourCode;
 
     #[test]
