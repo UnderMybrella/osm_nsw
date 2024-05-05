@@ -1,7 +1,7 @@
 pub mod serialisation {
     use serde::{ser, Serializer};
 
-    use crate::gtfs::gtfs_types::ColourCode;
+    use crate::gtfs::gtfs_types::{GtfsColourCode, GtfsID};
 
     macro_rules! create_serde_try_into_serialiser {
         ($T:ty, $serialize: ident) => (
@@ -19,13 +19,30 @@ pub mod serialisation {
         )
     }
 
-    create_serde_try_into_serialiser!(ColourCode, serialize_u32);
+    macro_rules! create_serde_as_ref_serialiser {
+        ($T:ty, $serialize: ident) => (
+            impl serde::Serialize for $T {
+                fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error> where S: Serializer {
+                    macro_rules! serde_call {
+                        ($self:ident, $F:ident) => {
+                            $self.$F(self.as_ref())
+                        };
+                    }
+
+                    serde_call!(serializer, $serialize)
+                }
+            }
+        )
+    }
+
+    // create_serde_try_into_serialiser!(GtfsColourCode, serialize_u32);
+    // create_serde_as_ref_serialiser!(GtfsID, serialize_str);
 }
 
 pub mod deserialisation {
     use std::marker::PhantomData;
 
-    use crate::gtfs::gtfs_types::ColourCode;
+    use crate::gtfs::gtfs_types::GtfsColourCode;
 
     struct GTFSVisitor<T>(PhantomData<T>);
 
@@ -83,18 +100,18 @@ pub mod deserialisation {
         )
 }
 
-    create_serde_int_deserialiser!(ColourCode, "a colour code as an integer or string", "colour code string", deserialize_u32);
+    // create_serde_int_deserialiser!(GtfsColourCode, "a colour code as an integer or string", "colour code string", deserialize_u32);
 }
 
 #[cfg(test)]
 mod serde_tests {
     use serde_test::{assert_ser_tokens, Token};
 
-    use crate::gtfs::gtfs_types::ColourCode;
+    use crate::gtfs::gtfs_types::GtfsColourCode;
 
     #[test]
     fn test_serialisation() {
-        let colour_code = ColourCode(0xDEADBEEF);
+        let colour_code = GtfsColourCode(0xDEADBEEF);
         assert_ser_tokens(&colour_code, &[Token::U32(0xDEADBEEF)])
     }
 }
