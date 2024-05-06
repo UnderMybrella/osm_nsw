@@ -19,7 +19,7 @@ use std::io::Write;
 use chrono::{NaiveTime, TimeDelta};
 use config::Config;
 use serde::Deserialize;
-use crate::gtfs::gtfs_chrono::test_chrono;
+use crate::gtfs::gtfs_types::GtfsTime;
 
 #[derive(Debug, Deserialize)]
 struct TransportNswConfig {
@@ -45,10 +45,6 @@ async fn main() -> anyhow::Result<()> {
         .add_source(config::File::with_name("transport_nsw"))
         .build()?
         .try_deserialize()?;
-
-    test_chrono();
-
-    return Ok(());
 
     // let client = TransportNswApiClient::new(env::var("TRANSPORT_NSW_API_KEY")?)?;
     // let get_complete = client.timetables().get_complete_gtfs().await?;

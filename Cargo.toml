@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+# We're working with a lot of CSV files under GTFS
 csv = "1.3.0"
 reqwest = { version = "0.12", features = ["json", "stream"] }
 tokio = { version = "1", features = ["full"] }
@@ -15,6 +16,7 @@ geojson = "0.24.1"
 proj = {  version = "0.27.2", features = ["geo-types"] }
 geo-types = "0.7.13"
 serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0" }
 num-traits = "0.2.18"
 anyhow = "1.0.82"
 governor = "0.6.3"

@@ -21,8 +21,8 @@ pub struct GtfsEmail(pub String);
 pub struct GtfsID(pub String);
 #[derive(Debug, Serialize, Deserialize)]
 pub struct GtfsLanguageCode(pub String);
-#[derive(Debug, Serialize, Deserialize)]
-pub struct GtfsTime(pub NaiveTime);
+#[derive(Debug)]
+pub struct GtfsTime(pub TimeDelta);
 
 impl FromStr for GtfsColourCode {
     type Err = ParseIntError;

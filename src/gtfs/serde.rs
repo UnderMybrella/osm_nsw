@@ -1,7 +1,7 @@
 pub mod serialisation {
-    use serde::{ser, Serializer};
+    use serde::{ser, Serialize, Serializer};
 
-    use crate::gtfs::gtfs_types::{GtfsColourCode, GtfsID};
+    use crate::gtfs::gtfs_types::{GtfsColourCode, GtfsID, GtfsTime};
 
     macro_rules! create_serde_try_into_serialiser {
         ($T:ty, $serialize: ident) => (
@@ -37,12 +37,21 @@ pub mod serialisation {
 
     // create_serde_try_into_serialiser!(GtfsColourCode, serialize_u32);
     // create_serde_as_ref_serialiser!(GtfsID, serialize_str);
+
+    impl Serialize for GtfsTime {
+        fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error> where S: Serializer {
+            serializer.serialize_str(&self.to_string())
+        }
+    }
 }
 
 pub mod deserialisation {
     use std::marker::PhantomData;
+    use serde::{Deserialize, Deserializer};
+    use serde::de::Error;
+    use crate::errors::IntoAnyhowError;
 
-    use crate::gtfs::gtfs_types::GtfsColourCode;
+    use crate::gtfs::gtfs_types::{GtfsColourCode, GtfsTime};
 
     struct GTFSVisitor<T>(PhantomData<T>);
 
@@ -101,6 +110,12 @@ pub mod deserialisation {
 }
 
     // create_serde_int_deserialiser!(GtfsColourCode, "a colour code as an integer or string", "colour code string", deserialize_u32);
+
+    impl<'de> Deserialize<'de> for GtfsTime {
+        fn deserialize<D>(deserializer: D) -> Result<Self, D::Error> where D: Deserializer<'de> {
+            String::deserialize(deserializer)?.parse().map_err(Error::custom)
+        }
+    }
 }
 
 #[cfg(test)]
