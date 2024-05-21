@@ -17,9 +17,9 @@ pub struct GtfsCurrencyCode(pub String);
 pub struct GtfsCurrencyAmount(pub f64);
 #[derive(Debug)]
 pub struct GtfsEmail(pub String);
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct GtfsID(pub String);
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Ord, PartialOrd, Eq, PartialEq)]
 pub struct GtfsLanguageCode(pub String);
 #[derive(Debug)]
 pub struct GtfsTime(pub TimeDelta);

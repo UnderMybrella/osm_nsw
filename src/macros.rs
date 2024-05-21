@@ -35,3 +35,13 @@ macro_rules! make_from_primitive_try_from {
         try_from_prim!($to_call::<u128>$T[$constructor]);
      };
  }
+
+#[macro_export]
+macro_rules! for_iter {
+    ($i:pat in $iter:expr, |$n:ident| $body:block) => {
+        let mut $n = $iter;
+        while let Some($i) = $n.next() {
+            $body
+        }
+    };
+}
